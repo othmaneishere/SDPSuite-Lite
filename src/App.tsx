@@ -5,6 +5,7 @@ import {
   Settings2,
   Network,
   Files,
+  LogOut,
   Trash,
   Trash2,
   Bomb,
@@ -225,6 +226,7 @@ export default function App() {
 }
 
 function AppContent() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'PESTEL' | 'McKinsey' | 'VRIO' | 'TOWS' | 'PORTER'>(
     () => {
       const saved = localStorage.getItem(`sdp_tab`);
@@ -638,6 +640,14 @@ function AppContent() {
           </div>
           <div className="flex w-full items-center justify-end gap-2 md:w-auto md:gap-3">
             <div className="flex items-center gap-0.5 md:gap-1">
+              <button
+                onClick={() => navigate('/access')}
+                className="flex cursor-pointer items-center gap-2 rounded-xl px-2 py-2 text-[9px] font-extrabold tracking-[0.1em] text-gray-500 uppercase transition-all hover:text-blue-600 md:px-4 md:text-[10px] md:tracking-[0.2em]"
+                title="Exit to access page"
+              >
+                <LogOut size={16} />
+                <span className="hidden sm:inline">Exit</span>
+              </button>
               <button
                 onClick={clearData}
                 className="cursor-pointer p-1 text-gray-400 transition-all hover:text-red-500 md:p-2"
