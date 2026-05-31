@@ -433,6 +433,46 @@ function AppContent() {
     setLastSaved(new Date());
   };
 
+  const exportBackup = () => {
+    const data = {
+      pestel: pestelData,
+      mckinsey: mckinseyData,
+      vrio: vrioAnalysisData,
+      vrioNotes,
+      tows: towsData,
+      porters: portersData,
+      meta,
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `app-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const importBackup = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const importedData = JSON.parse(e.target?.result as string);
+        // Basic validation
+        if (importedData.pestel && importedData.meta) {
+          localStorage.setItem(`sdp_data_local`, JSON.stringify(importedData));
+          window.location.reload();
+        } else {
+          alert('Invalid backup file structure.');
+        }
+      } catch (err) {
+        alert('Failed to parse backup file.');
+      }
+    };
+    reader.readAsText(file);
+  };
 
   const exportPDF = async () => {
     setIsExporting(true);
@@ -703,6 +743,20 @@ function AppContent() {
             <div className="mx-2 hidden h-8 w-px bg-gray-100 md:block" />
             <div className="flex items-center gap-3">
               <ManualSaveButton onSave={handleManualSave} />
+              
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={exportBackup}
+                  className="rounded-xl bg-gray-100 px-3 py-1.5 text-[10px] font-black tracking-widest uppercase text-gray-500 transition-all hover:bg-gray-200 hover:text-gray-900"
+                >
+                  Export Backup
+                </button>
+                <label className="cursor-pointer rounded-xl bg-gray-100 px-3 py-1.5 text-[10px] font-black tracking-widest uppercase text-gray-500 transition-all hover:bg-gray-200 hover:text-gray-900">
+                  Import Backup
+                  <input type="file" className="hidden" accept=".json" onChange={importBackup} />
+                </label>
+              </div>
+
               {lastSaved && (
                 <div className="flex flex-col items-start">
                   <div className="flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50 px-2 py-1 text-[9px] font-black tracking-tighter text-blue-600 uppercase">
@@ -718,6 +772,10 @@ function AppContent() {
                 </div>
               )}
             </div>
+          </div>
+          
+          <div className="w-full text-[9px] text-gray-400 italic text-center p-2 border-t mt-2">
+            Backup your data regularly. Save the exported file to your PC, cloud storage, or USB drive so you can restore it later.
           </div>
           <div className="flex w-full items-center justify-end gap-2 md:w-auto md:gap-3">
             <div className="flex items-center gap-0.5 md:gap-1">
