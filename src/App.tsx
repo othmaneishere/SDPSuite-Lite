@@ -148,30 +148,100 @@ const AccessPage = ({
   const [selectedValue, setSelectedValue] = useState('');
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-md space-y-6 rounded-2xl bg-white p-8 shadow-xl">
-        <h1 className="text-2xl font-bold text-gray-900">Workspace Access</h1>
-        <div className="space-y-4">
-          <label className="block text-sm font-semibold text-gray-700">Select your group</label>
-          <select
-            className="w-full rounded-lg border p-3"
-            value={selectedValue}
-            onChange={(e) => setSelectedValue(e.target.value)}
-          >
-            <option value="">Choose your team...</option>
-            {Array.from({ length: 11 }, (_, i) => (
-              <option key={i + 1} value={`Group ${i + 1}`}>
-                Group {i + 1}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={() => selectedValue && onSelectGroup(selectedValue)}
-            disabled={!selectedValue}
-            className="w-full rounded-lg bg-gray-900 p-3 text-white disabled:opacity-50"
-          >
-            Enter Workspace
-          </button>
+    <div className="flex min-h-screen flex-col bg-white font-sans selection:bg-blue-50 lg:flex-row">
+      <div className="flex w-full flex-col justify-center border-b border-slate-100 bg-slate-50/50 p-8 md:p-16 lg:w-[45%] lg:border-r lg:border-b-0 lg:p-24">
+        <div className="animate-in fade-in slide-in-from-left-4 flex flex-col items-start gap-12 duration-1000 lg:gap-20">
+          <img
+            alt="SDP Suite Logo"
+            className="h-56 w-56 object-contain md:h-72 md:w-72"
+            src="https://i.ibb.co/WWxYzvmx/pbs-logo.png"
+          />
+          <div className="space-y-6">
+            <h1 className="text-4xl leading-[1.1] font-black tracking-tight text-slate-900 md:text-5xl lg:text-6xl">
+              Strategic Suite <br /> Access
+            </h1>
+            <div className="h-2 w-20 rounded-full bg-blue-600"></div>
+          </div>
+        </div>
+        <div className="mt-16 opacity-60 lg:mt-32">
+          <p className="text-[10px] font-black tracking-widest text-slate-900 uppercase">
+            © Africa Campus – École des Ponts Business School
+          </p>
+        </div>
+      </div>
+      <div className="flex flex-1 flex-col justify-center bg-white p-8 md:p-16 lg:p-24">
+        <div className="animate-in fade-in slide-in-from-right-4 mx-auto w-full max-w-[440px] space-y-12 delay-200 duration-1000">
+          <div className="space-y-4 text-left">
+            <h2 className="text-3xl font-black tracking-tight text-slate-900 uppercase md:text-4xl">
+              Workspace Access
+            </h2>
+            <p className="text-lg leading-relaxed font-medium text-slate-400">
+              Initialize your team assignment.
+            </p>
+          </div>
+          <div className="w-full">
+            <div className="space-y-6">
+              <div className="mb-8 space-y-3">
+                <label className="block pl-1 text-[11px] font-black tracking-[0.2em] text-slate-900 uppercase">
+                  Assigned Group
+                </label>
+                <div className="group relative">
+                  <select
+                    className="w-full cursor-pointer appearance-none rounded-2xl border border-slate-200 bg-slate-50 px-4 py-5 text-base font-bold text-slate-800 transition-all outline-none focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-50/50"
+                    value={selectedValue}
+                    onChange={(e) => setSelectedValue(e.target.value)}
+                  >
+                    <option value="">Choose your team...</option>
+                    {Array.from({ length: 11 }, (_, i) => (
+                      <option key={i + 1} value={`Group ${i + 1}`}>
+                        Group {i + 1}
+                      </option>
+                    ))}
+                  </select>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-chevron-down pointer-events-none absolute top-1/2 right-5 -translate-y-1/2 text-slate-300 transition-colors group-hover:text-slate-600"
+                    aria-hidden="true"
+                  >
+                    <path d="m6 9 6 6 6-6"></path>
+                  </svg>
+                </div>
+              </div>
+              <div className="pt-2">
+                <button
+                  onClick={() => selectedValue && onSelectGroup(selectedValue)}
+                  disabled={!selectedValue}
+                  className="flex w-full cursor-pointer items-center justify-center gap-3 rounded-2xl py-5 text-xs font-black tracking-[0.2em] uppercase transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 bg-slate-900 text-white hover:bg-black shadow-xl shadow-slate-200 hover:shadow-slate-300"
+                >
+                  Enter Workspace
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-arrow-right"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
