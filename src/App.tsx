@@ -10,7 +10,9 @@ import {
   Trash2,
   Bomb,
   BookOpen,
+  Save,
 } from 'lucide-react';
+import { ManualSaveButton } from './components/ManualSaveButton';
 import { motion, AnimatePresence } from 'motion/react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
@@ -421,7 +423,18 @@ function AppContent() {
     isInitialized,
   ]);
 
-  const forceSave = () => {}; 
+  const handleManualSave = () => {
+    localStorage.setItem(`sdp_data_local`, JSON.stringify({
+      pestel: pestelData,
+      mckinsey: mckinseyData,
+      vrio: vrioAnalysisData,
+      vrioNotes,
+      tows: towsData,
+      porters: portersData,
+      meta,
+    }));
+    setLastSaved(new Date());
+  };
 
 
   const exportPDF = async () => {
@@ -692,6 +705,7 @@ function AppContent() {
             />
             <div className="mx-2 hidden h-8 w-px bg-gray-100 md:block" />
             <div className="flex items-center gap-3">
+              <ManualSaveButton onSave={handleManualSave} />
               {lastSaved && (
                 <div className="flex flex-col items-start">
                   <div className="flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50 px-2 py-1 text-[9px] font-black tracking-tighter text-blue-600 uppercase">
