@@ -1,4 +1,4 @@
-# SDP Suite Online - Coding Standards & Guidelines
+# SDP Suite Lite - Coding Standards & Guidelines
 
 ## 1. Code Style & Formatting
 
@@ -41,5 +41,5 @@
 ## 5. Reliability
 
 - **Error Boundaries**: Use the provided `ErrorBoundary` component for critical UI sections.
-- **Safety**: Always handle potential `null` or `undefined` values when fetching data from external APIs (like Supabase).
+- **Safety**: Always handle potential `null` or `undefined` values when fetching data.
 - **Validation**: Ensure data integrity by validating user inputs before sending them to the database.

@@ -1,4 +1,4 @@
-# Project Instructions: SDP Suite Online
+# Project Instructions: SDP Suite Lite
 
 ## Coding Standards
 
@@ -7,19 +7,17 @@
 - **Type Safety**: TypeScript must be strictly followed. Avoid `any`. Run `npm run type-check`.
 - **Commit Messages**: Use [Conventional Commits](https://www.conventionalcommits.org/).
   - Format: `<type>(<scope>): <subject>`
-  - Example: `feat(workspace): add new Porters 5 Forces chart`
+  - Example: `feat(workspace): add new local storage feature`
 
 ## Architecture & Workflows
 
 - **Framework**: React (TypeScript) with Vite.
 - **Styling**: TailwindCSS via `@tailwindcss/vite`.
-- **Database/Auth**: Supabase (Cloud Database).
-- **Worksheets**: State is managed locally and synced to Supabase based on `group_id`.
+- **Data Persistence**: Local Storage only. All data is saved on the user's device.
 
 ## Reliability
 
 - Always use `ErrorBoundary` for major UI components.
-- Ensure all Supabase calls are wrapped in `try/catch`.
 - Validate all user inputs.
 
 For detailed guidelines, see `GUIDELINES.md`.

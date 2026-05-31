@@ -72,8 +72,7 @@ export type MetaData = {
   cohort: string;
   date: string;
   companyName: string;
-  participants: string[];
-  group: string;
+  vrioNotes?: string;
 };
 
 export interface GroupData {
