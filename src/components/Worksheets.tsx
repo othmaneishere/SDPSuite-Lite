@@ -1370,13 +1370,43 @@ export const PortersFiveForces = ({
             </h3>
             <div className="h-px flex-1 bg-gray-100" />
           </div>
-          <div className="p-6 text-sm text-gray-700">
-            1. How would a new entrant affect your business? Response:
-            <br />
-            2. What will your competitors do if there is a new entrant into your marketplace? Response:
-            <br />
-            3. How will you respond to a new competitor? Response:
-          </div>
+          <table className="w-full table-fixed border-collapse">
+            <thead>
+              <tr className="bg-surface-container-low border-b border-outline-variant">
+                <th className="p-unit-6 border-r border-outline-variant text-left align-top">
+                  <div className="flex items-start gap-3">
+                    <span className="font-mono-data text-secondary text-lg font-bold">01</span>
+                    <p className="font-headline-md text-headline-md text-on-surface">How would a new entrant affect your business?</p>
+                  </div>
+                </th>
+                <th className="p-unit-6 border-r border-outline-variant text-left align-top">
+                  <div className="flex items-start gap-3">
+                    <span className="font-mono-data text-secondary text-lg font-bold">02</span>
+                    <p className="font-headline-md text-headline-md text-on-surface">What will your competitors do if there is a new entrant into your marketplace?</p>
+                  </div>
+                </th>
+                <th className="p-unit-6 text-left align-top">
+                  <div className="flex items-start gap-3">
+                    <span className="font-mono-data text-secondary text-lg font-bold">03</span>
+                    <p className="font-headline-md text-headline-md text-on-surface">How will you respond to a new competitor?</p>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="h-[400px]">
+                <td className="p-0 border-r border-outline-variant">
+                  <textarea className="w-full h-full p-unit-6 font-body-md text-body-md border-none focus:ring-1 focus:ring-inset focus:ring-secondary resize-none bg-transparent placeholder:italic placeholder:text-outline" placeholder="Detail: Analysis and strategical response notes..."></textarea>
+                </td>
+                <td className="p-0 border-r border-outline-variant">
+                  <textarea className="w-full h-full p-unit-6 font-body-md text-body-md border-none focus:ring-1 focus:ring-inset focus:ring-secondary resize-none bg-transparent placeholder:italic placeholder:text-outline" placeholder="Detail: Analysis and strategical response notes..."></textarea>
+                </td>
+                <td className="p-0">
+                  <textarea className="w-full h-full p-unit-6 font-body-md text-body-md border-none focus:ring-1 focus:ring-inset focus:ring-secondary resize-none bg-transparent placeholder:italic placeholder:text-outline" placeholder="Detail: Analysis and strategical response notes..."></textarea>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
