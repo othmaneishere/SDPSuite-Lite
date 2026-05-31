@@ -1373,37 +1373,60 @@ export const PortersFiveForces = ({
 
           <div className="overflow-hidden rounded-xl border-2 border-black bg-white shadow-lg">
             {activeForce === 'suppliers' ? (
-              <table className="w-full border-collapse">
-                <thead className="border-b-2 border-black bg-gray-100">
-                  <tr>
-                    <th className="border-r-2 border-black p-4 text-center text-[10px] leading-tight font-black tracking-[0.1em] text-gray-900 uppercase last:border-0">List the major inputs needed for your business.</th>
-                    <th className="border-r-2 border-black p-4 text-center text-[10px] leading-tight font-black tracking-[0.1em] text-gray-900 uppercase last:border-0">For each input, list possible suppliers.</th>
-                    <th className="border-r-2 border-black p-4 text-center text-[10px] leading-tight font-black tracking-[0.1em] text-gray-900 uppercase last:border-0">How can you best work with this supplier to maximize your bargaining power?</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y-2 divide-black">
-                  {[0, 1, 2, 3, 4].map((idx) => (
-                    <tr key={idx} className="group h-32">
+                <table className="w-full border-collapse">
+                  <thead className="border-b-2 border-black bg-gray-100">
+                    <tr>
+                      <th className="border-r-2 border-black p-4 text-center text-[10px] leading-tight font-black tracking-[0.1em] text-gray-900 uppercase last:border-0">List the major inputs needed for your business.</th>
+                      <th className="border-r-2 border-black p-4 text-center text-[10px] leading-tight font-black tracking-[0.1em] text-gray-900 uppercase last:border-0">For each input, list possible suppliers.</th>
+                      <th className="border-r-2 border-black p-4 text-center text-[10px] leading-tight font-black tracking-[0.1em] text-gray-900 uppercase last:border-0">How can you best work with this supplier to maximize your bargaining power?</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y-2 divide-black">
+                    {[0, 1, 2, 3, 4].map((idx) => (
+                      <tr key={idx} className="group h-32">
+                        {['col1', 'col2', 'col3'].map((col, cIdx) => (
+                          <td key={col} className="relative border-r-2 border-black p-0 last:border-0">
+                            <textarea
+                              value={currentData.further[idx]?.[col as keyof (typeof currentData.further)[0]] || ''}
+                              onChange={(e) => updateFurther(idx, col, e.target.value)}
+                              className="h-full w-full resize-none border-none bg-transparent p-6 pt-8 text-xs leading-relaxed font-semibold transition-all outline-none focus:bg-indigo-50/20"
+                              placeholder={cIdx === 0 ? 'Identify...' : 'Analysis...'}
+                            />
+                            {cIdx === 0 && (
+                              <span className="absolute top-2 left-3 text-[10px] font-black text-gray-200 uppercase transition-colors group-hover:text-gray-400">
+                                #{idx + 1}
+                              </span>
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : activeForce === 'newEntrants' ? (
+                <table className="w-full border-collapse">
+                  <thead className="border-b-2 border-black bg-gray-100">
+                    <tr>
+                      <th className="border-r-2 border-black p-4 text-center text-[10px] leading-tight font-black tracking-[0.1em] text-gray-900 uppercase last:border-0">How would a new entrant affect your business?</th>
+                      <th className="border-r-2 border-black p-4 text-center text-[10px] leading-tight font-black tracking-[0.1em] text-gray-900 uppercase last:border-0">What will your competitors do if there is a new entrant into your marketplace?</th>
+                      <th className="border-r-2 border-black p-4 text-center text-[10px] leading-tight font-black tracking-[0.1em] text-gray-900 uppercase last:border-0">How will you respond to a new competitor?</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y-2 divide-black">
+                    <tr className="group h-32">
                       {['col1', 'col2', 'col3'].map((col, cIdx) => (
                         <td key={col} className="relative border-r-2 border-black p-0 last:border-0">
                           <textarea
-                            value={currentData.further[idx]?.[col as keyof (typeof currentData.further)[0]] || ''}
-                            onChange={(e) => updateFurther(idx, col, e.target.value)}
+                            value={currentData.further[0]?.[col as keyof (typeof currentData.further)[0]] || ''}
+                            onChange={(e) => updateFurther(0, col, e.target.value)}
                             className="h-full w-full resize-none border-none bg-transparent p-6 pt-8 text-xs leading-relaxed font-semibold transition-all outline-none focus:bg-indigo-50/20"
-                            placeholder={cIdx === 0 ? 'Identify...' : 'Analysis...'}
                           />
-                          {cIdx === 0 && (
-                            <span className="absolute top-2 left-3 text-[10px] font-black text-gray-200 uppercase transition-colors group-hover:text-gray-400">
-                              #{idx + 1}
-                            </span>
-                          )}
                         </td>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            ) : (
+                  </tbody>
+                </table>
+              ) : (
               <table className="w-full border-collapse">
                 <thead className="border-b-2 border-black bg-gray-100">
                   <tr>
