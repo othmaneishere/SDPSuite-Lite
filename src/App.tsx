@@ -776,10 +776,15 @@ function AppContent() {
                   Import
                   <input type="file" className="hidden" accept=".json" onChange={importBackup} />
                 </label>
-              </div>
-              
-              <div className="text-[9px] text-gray-400 italic text-center md:text-right max-w-[300px]">
-                Backup your data regularly. Save exported files to your PC, cloud, or USB.
+                <div className="group relative">
+                  <button className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200">
+                    ?
+                  </button>
+                  <div className="absolute right-0 top-full z-50 mt-2 hidden w-64 rounded-xl border border-gray-200 bg-white p-4 text-[11px] leading-relaxed text-gray-600 shadow-xl group-hover:block">
+                    <span className="font-bold text-gray-900 block mb-1">Backup Recommendation</span>
+                    Backup your data regularly. Save exported files to your PC, cloud, or USB.
+                  </div>
+                </div>
               </div>
             </div>
           </div>
