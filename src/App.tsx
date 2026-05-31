@@ -733,49 +733,64 @@ function AppContent() {
     <div className="selection:bg-brand-blue/10 min-h-screen bg-gray-50/50 p-2 font-sans md:p-8">
       <div className="mx-auto flex min-h-[90vh] max-w-[1400px] flex-col overflow-hidden rounded-[20px] border border-gray-100 bg-white shadow-2xl shadow-gray-200/50 md:rounded-[32px]">
         <div className="flex flex-col items-center justify-between gap-4 border-b border-gray-100 bg-white p-4 md:flex-row md:p-6">
-          <div className="flex w-full items-center justify-between gap-4 md:w-auto md:justify-start">
-            <img
-              src="https://i.ibb.co/WWxYzvmx/pbs-logo.png"
-              alt="SDP Suite Logo"
-              className="h-24 w-auto object-contain md:h-48"
-              crossOrigin="anonymous"
-            />
-            <div className="mx-2 hidden h-8 w-px bg-gray-100 md:block" />
-            <div className="flex items-center gap-3">
-              <ManualSaveButton onSave={handleManualSave} />
+          <div className="flex flex-col items-center gap-4 bg-white p-4 md:flex-row md:justify-between md:p-6 border-b border-gray-100">
+            {/* Logo and Status Container */}
+            <div className="flex w-full items-center justify-between gap-4 md:w-auto md:justify-start">
+              <img
+                src="https://i.ibb.co/WWxYzvmx/pbs-logo.png"
+                alt="SDP Suite Logo"
+                className="h-20 w-auto object-contain md:h-32"
+                crossOrigin="anonymous"
+              />
               
-              <div className="flex items-center gap-1">
+              {/* Desktop Status */}
+              <div className="hidden md:flex items-center gap-4 border-l border-gray-100 pl-4">
+                {lastSaved && (
+                  <div className="flex flex-col items-start">
+                    <div className="flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50 px-2 py-1 text-[9px] font-black tracking-tighter text-blue-600 uppercase">
+                      Auto-Saved
+                    </div>
+                    <span className="mt-0.5 ml-1 text-[8px] font-bold text-gray-400">
+                      {lastSaved.toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                      })}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Actions Container */}
+            <div className="flex w-full flex-col items-center gap-3 md:w-auto md:items-end">
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                <ManualSaveButton onSave={handleManualSave} />
                 <button
                   onClick={exportBackup}
-                  className="rounded-xl bg-gray-100 px-3 py-1.5 text-[10px] font-black tracking-widest uppercase text-gray-500 transition-all hover:bg-gray-200 hover:text-gray-900"
+                  className="rounded-lg bg-gray-50 px-3 py-1.5 text-[10px] font-black tracking-widest uppercase text-gray-600 transition-all hover:bg-gray-100 hover:text-gray-900 border border-gray-200"
                 >
-                  Export Backup
+                  Export
                 </button>
-                <label className="cursor-pointer rounded-xl bg-gray-100 px-3 py-1.5 text-[10px] font-black tracking-widest uppercase text-gray-500 transition-all hover:bg-gray-200 hover:text-gray-900">
-                  Import Backup
+                <label className="cursor-pointer rounded-lg bg-gray-50 px-3 py-1.5 text-[10px] font-black tracking-widest uppercase text-gray-600 transition-all hover:bg-gray-100 hover:text-gray-900 border border-gray-200">
+                  Import
                   <input type="file" className="hidden" accept=".json" onChange={importBackup} />
                 </label>
               </div>
-
-              {lastSaved && (
-                <div className="flex flex-col items-start">
-                  <div className="flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50 px-2 py-1 text-[9px] font-black tracking-tighter text-blue-600 uppercase">
-                    Auto-Saved Locally
-                  </div>
-                  <span className="mt-0.5 ml-1 text-[8px] font-bold text-gray-400">
-                    {lastSaved.toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      second: '2-digit',
-                    })}
-                  </span>
-                </div>
-              )}
+              
+              <div className="text-[9px] text-gray-400 italic text-center md:text-right max-w-[300px]">
+                Backup your data regularly. Save exported files to your PC, cloud, or USB.
+              </div>
             </div>
           </div>
           
-          <div className="w-full text-[9px] text-gray-400 italic text-center p-2 border-t mt-2">
-            Backup your data regularly. Save the exported file to your PC, cloud storage, or USB drive so you can restore it later.
+          {/* Mobile Status */}
+          <div className="md:hidden w-full px-4 pb-2 border-b border-gray-100 flex justify-center">
+            {lastSaved && (
+              <span className="text-[9px] font-bold text-gray-400">
+                Last Auto-Save: {lastSaved.toLocaleTimeString()}
+              </span>
+            )}
           </div>
           <div className="flex w-full items-center justify-end gap-2 md:w-auto md:gap-3">
             <div className="flex items-center gap-0.5 md:gap-1">
