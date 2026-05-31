@@ -1,14 +1,11 @@
 import { useState, useEffect, useRef, Component, ErrorInfo, ReactNode } from 'react';
-import React from 'react';
 import {
   FileText,
   Settings2,
   Network,
   Files,
   LogOut,
-  Trash,
   Trash2,
-  Bomb,
   BookOpen,
   Save,
 } from 'lucide-react';
