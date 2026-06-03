@@ -73,6 +73,7 @@ export type MetaData = {
   date: string;
   companyName: string;
   vrioNotes?: string;
+  group?: string;
 };
 
 export interface GroupData {

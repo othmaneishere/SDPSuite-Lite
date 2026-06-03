@@ -78,10 +78,12 @@ const CorporateHeader = ({
   meta,
   setMeta,
   hideMeta = false,
+  group,
 }: {
   meta: MetaData;
   setMeta: (m: MetaData) => void;
   hideMeta?: boolean;
+  group?: string | null;
 }) => {
   return (
     <div
@@ -114,6 +116,12 @@ const CorporateHeader = ({
               Cohort
             </span>
             <span className="font-semibold text-black">MA27</span>
+          </div>
+          <div className="flex flex-col border-b border-gray-200">
+            <span className="text-[10px] font-semibold tracking-wider text-gray-500 uppercase">
+              Group
+            </span>
+            <span className="font-semibold text-blue-600">{group || 'Not Assigned'}</span>
           </div>
           <div className="flex flex-col border-b border-gray-200">
             <span className="text-[10px] font-semibold tracking-wider text-gray-500 uppercase">
@@ -175,7 +183,7 @@ const AccessPage = ({
               Workspace Access
             </h2>
             <p className="text-lg leading-relaxed font-medium text-slate-400">
-              Initialize your team assignment.
+              Initialize your group assignment.
             </p>
           </div>
           <div className="w-full">
@@ -190,7 +198,7 @@ const AccessPage = ({
                     value={selectedValue}
                     onChange={(e) => setSelectedValue(e.target.value)}
                   >
-                    <option value="">Choose your team...</option>
+                    <option value="">Choose your group...</option>
                     {Array.from({ length: 11 }, (_, i) => (
                       <option key={i + 1} value={`Group ${i + 1}`}>
                         Group {i + 1}
@@ -281,7 +289,7 @@ export default function App() {
             path="/workspace"
             element={
               selectedGroup ? (
-                <AppContent />
+                <AppContent selectedGroup={selectedGroup} />
               ) : (
                 <Navigate to="/access" replace />
               )
@@ -294,7 +302,7 @@ export default function App() {
   );
 }
 
-function AppContent() {
+function AppContent({ selectedGroup }: { selectedGroup: string }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'PESTEL' | 'McKinsey' | 'VRIO' | 'TOWS' | 'PORTER'>(
     () => {
@@ -920,6 +928,7 @@ function AppContent() {
               <CorporateHeader
                 meta={meta}
                 setMeta={setMeta}
+                group={selectedGroup}
               />
               {activeTab === 'TOWS' && <ConfrontationMatrixGuide />}
               <div className="mb-12">
@@ -1007,6 +1016,7 @@ function AppContent() {
           <CorporateHeader
             meta={meta}
             setMeta={setMeta}
+            group={selectedGroup}
           />
           <h2 className="mb-8 border-b-8 border-gray-100 pb-2 text-4xl font-bold tracking-tight text-gray-900 uppercase">
             PESTEL Analysis
@@ -1017,6 +1027,7 @@ function AppContent() {
           <CorporateHeader
             meta={meta}
             setMeta={setMeta}
+            group={selectedGroup}
           />
           <h2 className="mb-8 border-b-8 border-gray-100 pb-2 text-4xl font-bold tracking-tight text-gray-900 uppercase">
             McKinsey 7-S Framework
@@ -1027,6 +1038,7 @@ function AppContent() {
           <CorporateHeader
             meta={meta}
             setMeta={setMeta}
+            group={selectedGroup}
           />
           <h2 className="mb-8 border-b-8 border-gray-100 pb-2 text-4xl font-bold tracking-tight text-gray-900 uppercase">
             VRIO Framework
@@ -1047,6 +1059,7 @@ function AppContent() {
               <CorporateHeader
                 meta={meta}
                 setMeta={setMeta}
+                group={selectedGroup}
               />
               <h2 className="mb-8 border-b-8 border-indigo-600 pb-2 text-4xl font-bold tracking-tight text-gray-900 uppercase">
                 Porter's 5 Forces: {force.toUpperCase()}
@@ -1064,6 +1077,7 @@ function AppContent() {
           <CorporateHeader
             meta={meta}
             setMeta={setMeta}
+            group={selectedGroup}
           />
           <ConfrontationMatrixGuide />
           <div className="mt-8">
