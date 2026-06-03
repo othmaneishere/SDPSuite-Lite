@@ -289,7 +289,7 @@ export default function App() {
             path="/workspace"
             element={
               selectedGroup ? (
-                <AppContent selectedGroup={selectedGroup} />
+                <AppContent key={selectedGroup} selectedGroup={selectedGroup} />
               ) : (
                 <Navigate to="/access" replace />
               )
@@ -347,7 +347,7 @@ function AppContent({ selectedGroup }: { selectedGroup: string }) {
   // Initial Load from LocalStorage
   useEffect(() => {
     const loadData = () => {
-      const saved = localStorage.getItem(`sdp_data_local`);
+      const saved = localStorage.getItem(`sdp_data_${selectedGroup}`);
       if (saved) {
         try {
           const local = JSON.parse(saved);
@@ -400,13 +400,13 @@ function AppContent({ selectedGroup }: { selectedGroup: string }) {
     };
 
     loadData();
-  }, []);
+  }, [selectedGroup]);
 
   // Auto-save to LocalStorage
   useEffect(() => {
     if (isLoading || !isInitialized) return;
 
-    localStorage.setItem(`sdp_data_local`, JSON.stringify({
+    localStorage.setItem(`sdp_data_${selectedGroup}`, JSON.stringify({
       pestel: pestelData,
       mckinsey: mckinseyData,
       vrio: vrioAnalysisData,
@@ -426,10 +426,11 @@ function AppContent({ selectedGroup }: { selectedGroup: string }) {
     meta,
     isLoading,
     isInitialized,
+    selectedGroup,
   ]);
 
   const handleManualSave = () => {
-    localStorage.setItem(`sdp_data_local`, JSON.stringify({
+    localStorage.setItem(`sdp_data_${selectedGroup}`, JSON.stringify({
       pestel: pestelData,
       mckinsey: mckinseyData,
       vrio: vrioAnalysisData,
@@ -470,7 +471,7 @@ function AppContent({ selectedGroup }: { selectedGroup: string }) {
         const importedData = JSON.parse(e.target?.result as string);
         // Basic validation
         if (importedData.pestel && importedData.meta) {
-          localStorage.setItem(`sdp_data_local`, JSON.stringify(importedData));
+          localStorage.setItem(`sdp_data_${selectedGroup}`, JSON.stringify(importedData));
           window.location.reload();
         } else {
           alert('Invalid backup file structure.');
