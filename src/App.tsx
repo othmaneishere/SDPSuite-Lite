@@ -539,10 +539,24 @@ function AppContent({ selectedGroup }: { selectedGroup: string }) {
     reader.onload = (e) => {
       try {
         const importedData = JSON.parse(e.target?.result as string);
-        // Basic validation
-        if (importedData.pestel && importedData.meta) {
-          localStorage.setItem(`sdp_data_${selectedGroup}`, JSON.stringify(importedData));
-          window.location.reload();
+        // Basic validation - check if it looks like our data
+        if (importedData && (importedData.pestel || importedData.meta)) {
+          // Update all React states first
+          if (importedData.pestel) setPestelData(importedData.pestel);
+          if (importedData.mckinsey) setMckinseyData(importedData.mckinsey);
+          if (importedData.vrio) setVrioAnalysisData(importedData.vrio);
+          if (importedData.vrioNotes !== undefined) setVrioNotes(importedData.vrioNotes);
+          if (importedData.tows) setTowsData(importedData.tows);
+          if (importedData.porters) setPortersData(importedData.porters);
+          if (importedData.meta) setMeta(importedData.meta);
+
+          // Update both localStorage keys
+          const dataString = JSON.stringify(importedData);
+          localStorage.setItem(`sdp_data_${selectedGroup}`, dataString);
+          localStorage.setItem(`sdp_data_${selectedGroup}_backup`, dataString);
+          
+          setLastSaved(new Date());
+          alert('Data imported successfully!');
         } else {
           alert('Invalid backup file structure.');
         }
@@ -551,6 +565,8 @@ function AppContent({ selectedGroup }: { selectedGroup: string }) {
       }
     };
     reader.readAsText(file);
+    // Clear the input so the same file can be imported again if needed
+    event.target.value = '';
   };
 
   const exportPDF = async () => {
