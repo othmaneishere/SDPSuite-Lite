@@ -1384,15 +1384,15 @@ export const PortersFiveForces = ({
                   <tbody className="divide-y-2 divide-black">
                     {[0, 1, 2, 3, 4].map((idx) => (
                       <tr key={idx} className="group h-32">
-                        {['col1', 'col2', 'col3'].map((col, cIdx) => (
+                        {['col1', 'col2', 'col3'].map((col, _cIdx) => (
                           <td key={col} className="relative border-r-2 border-black p-0 last:border-0">
                             <textarea
                               value={currentData.further[idx]?.[col as keyof (typeof currentData.further)[0]] || ''}
                               onChange={(e) => updateFurther(idx, col, e.target.value)}
                               className="h-full w-full resize-none border-none bg-transparent p-6 pt-8 text-xs leading-relaxed font-semibold transition-all outline-none focus:bg-indigo-50/20"
-                              placeholder={cIdx === 0 ? 'Identify...' : 'Analysis...'}
+                              placeholder={_cIdx === 0 ? 'Identify...' : 'Analysis...'}
                             />
-                            {cIdx === 0 && (
+                            {_cIdx === 0 && (
                               <span className="absolute top-2 left-3 text-[10px] font-black text-gray-200 uppercase transition-colors group-hover:text-gray-400">
                                 #{idx + 1}
                               </span>
@@ -1414,7 +1414,7 @@ export const PortersFiveForces = ({
                   </thead>
                   <tbody className="divide-y-2 divide-black">
                     <tr className="group h-32">
-                      {['col1', 'col2', 'col3'].map((col, cIdx) => (
+                      {['col1', 'col2', 'col3'].map((col, _cIdx) => (
                         <td key={col} className="relative border-r-2 border-black p-0 last:border-0">
                           <textarea
                             value={currentData.further[0]?.[col as keyof (typeof currentData.further)[0]] || ''}
@@ -1445,7 +1445,7 @@ export const PortersFiveForces = ({
                     <tr key={idx} className="group h-32">
                       {(['col1', 'col2', 'col3', 'col4'] as const)
                         .slice(0, currentConfig.tableHeaders.length)
-                        .map((col, cIdx) => (
+                        .map((col, _cIdx) => (
                           <td
                             key={col}
                             className="relative border-r-2 border-black p-0 last:border-0"
@@ -1454,9 +1454,9 @@ export const PortersFiveForces = ({
                               value={currentData.further[idx]?.[col as keyof (typeof currentData.further)[0]] || ''}
                               onChange={(e) => updateFurther(idx, col, e.target.value)}
                               className="h-full w-full resize-none border-none bg-transparent p-6 pt-8 text-xs leading-relaxed font-semibold transition-all outline-none focus:bg-indigo-50/20"
-                              placeholder={cIdx === 0 ? 'Identify...' : 'Analysis...'}
+                              placeholder={_cIdx === 0 ? 'Identify...' : 'Analysis...'}
                             />
-                            {cIdx === 0 && (
+                            {_cIdx === 0 && (
                               <span className="absolute top-2 left-3 text-[10px] font-black text-gray-200 uppercase transition-colors group-hover:text-gray-400">
                                 #{idx + 1}
                               </span>

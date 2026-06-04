@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, Component, ErrorInfo, ReactNode } from 'react';
+import { useState, useEffect, useRef, Component, ErrorInfo, ReactNode, useCallback } from 'react';
 import {
   FileText,
   Settings2,
@@ -7,7 +7,6 @@ import {
   LogOut,
   Trash2,
   BookOpen,
-  Save,
 } from 'lucide-react';
 import { ManualSaveButton } from './components/ManualSaveButton';
 import { motion, AnimatePresence } from 'motion/react';
@@ -18,12 +17,10 @@ import { cn } from './lib/utils';
 import {
   MetaData,
   PESTELData,
-  PESTELRow,
   McKinsey7SData,
   VRIORow,
   TOWSRow,
   PorterRow,
-  GroupData,
   PortersFiveForcesData,
 } from './types';
 
@@ -347,7 +344,17 @@ function AppContent({ selectedGroup }: { selectedGroup: string }) {
   // Initial Load from LocalStorage
   useEffect(() => {
     const loadData = () => {
-      const saved = localStorage.getItem(`sdp_data_${selectedGroup}`);
+      const primaryKey = `sdp_data_${selectedGroup}`;
+      const backupKey = `sdp_data_${selectedGroup}_backup`;
+      
+      let saved = localStorage.getItem(primaryKey);
+      
+      // If primary missing, try backup
+      if (!saved) {
+        saved = localStorage.getItem(backupKey);
+        if (saved) console.log('Recovered data from backup');
+      }
+
       if (saved) {
         try {
           const local = JSON.parse(saved);
@@ -359,7 +366,23 @@ function AppContent({ selectedGroup }: { selectedGroup: string }) {
           if (local.porters) setPortersData(local.porters);
           if (local.meta) setMeta(local.meta);
         } catch (e) {
-          console.error('Failed to parse local data', e);
+          console.error('Failed to parse primary local data, trying backup...', e);
+          // If parsing primary failed, try backup as last resort
+          const backup = localStorage.getItem(backupKey);
+          if (backup) {
+            try {
+              const local = JSON.parse(backup);
+              if (local.pestel) setPestelData(local.pestel);
+              if (local.mckinsey) setMckinseyData(local.mckinsey);
+              if (local.vrio) setVrioAnalysisData(local.vrio);
+              if (local.vrioNotes) setVrioNotes(local.vrioNotes || '');
+              if (local.tows) setTowsData(local.tows);
+              if (local.porters) setPortersData(local.porters);
+              if (local.meta) setMeta(local.meta);
+            } catch (backupErr) {
+              console.error('Backup also failed to parse', backupErr);
+            }
+          }
         }
       } else {
         // Initialize defaults
@@ -402,20 +425,54 @@ function AppContent({ selectedGroup }: { selectedGroup: string }) {
     loadData();
   }, [selectedGroup]);
 
-  // Auto-save to LocalStorage
+  const saveData = useCallback((isImmediate = false) => {
+    if (isLoading || !isInitialized) return;
+
+    try {
+      const dataString = JSON.stringify({
+        pestel: pestelData,
+        mckinsey: mckinseyData,
+        vrio: vrioAnalysisData,
+        vrioNotes,
+        tows: towsData,
+        porters: portersData,
+        meta,
+      });
+
+      const primaryKey = `sdp_data_${selectedGroup}`;
+      const backupKey = `sdp_data_${selectedGroup}_backup`;
+
+      localStorage.setItem(primaryKey, dataString);
+      // Also save to backup for redundancy
+      localStorage.setItem(backupKey, dataString);
+
+      setLastSaved(new Date());
+      if (isImmediate) console.log('Immediate save triggered');
+    } catch (e) {
+      console.error('Failed to save data to localStorage', e);
+    }
+  }, [
+    isLoading,
+    isInitialized,
+    pestelData,
+    mckinseyData,
+    vrioAnalysisData,
+    vrioNotes,
+    towsData,
+    portersData,
+    meta,
+    selectedGroup,
+  ]);
+
+  // Debounced Auto-save to LocalStorage
   useEffect(() => {
     if (isLoading || !isInitialized) return;
 
-    localStorage.setItem(`sdp_data_${selectedGroup}`, JSON.stringify({
-      pestel: pestelData,
-      mckinsey: mckinseyData,
-      vrio: vrioAnalysisData,
-      vrioNotes,
-      tows: towsData,
-      porters: portersData,
-      meta,
-    }));
-    setLastSaved(new Date());
+    const timeoutId = setTimeout(() => {
+      saveData();
+    }, 1000); // 1s debounce
+
+    return () => clearTimeout(timeoutId);
   }, [
     pestelData,
     mckinseyData,
@@ -427,19 +484,32 @@ function AppContent({ selectedGroup }: { selectedGroup: string }) {
     isLoading,
     isInitialized,
     selectedGroup,
+    saveData,
   ]);
 
+  // Emergency Save on Exit/Background
+  useEffect(() => {
+    const handleExit = () => {
+      saveData(true);
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        saveData(true);
+      }
+    };
+
+    window.addEventListener('beforeunload', handleExit);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleExit);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [pestelData, mckinseyData, vrioAnalysisData, vrioNotes, towsData, portersData, meta, isLoading, isInitialized, selectedGroup, saveData]);
+
   const handleManualSave = () => {
-    localStorage.setItem(`sdp_data_${selectedGroup}`, JSON.stringify({
-      pestel: pestelData,
-      mckinsey: mckinseyData,
-      vrio: vrioAnalysisData,
-      vrioNotes,
-      tows: towsData,
-      porters: portersData,
-      meta,
-    }));
-    setLastSaved(new Date());
+    saveData(true);
   };
 
   const exportBackup = () => {
@@ -476,7 +546,7 @@ function AppContent({ selectedGroup }: { selectedGroup: string }) {
         } else {
           alert('Invalid backup file structure.');
         }
-      } catch (err) {
+      } catch {
         alert('Failed to parse backup file.');
       }
     };
